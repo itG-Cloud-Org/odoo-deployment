@@ -1,5 +1,6 @@
 ---
 version: '3.1'
+
 services:
   odoo:
     container_name: odoo
@@ -14,7 +15,8 @@ services:
       - PASSWORD=myodoo
       - DATABASE=postgres
     networks:
-      - prod-network 
+      - prod-network
+
   db:
     container_name: db
     image: postgres:16.3
@@ -30,3 +32,4 @@ services:
 networks:
   prod-network:
     external: true
+
