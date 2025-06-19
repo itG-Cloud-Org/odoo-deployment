@@ -2,9 +2,6 @@ name: Deploy Odoo
 
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#     - main
 
 jobs:
   deploy:
@@ -19,6 +16,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Install yamllint
+        run: sudo apt-get install -y yamllint
+
+      - name: Lint docker-compose YAML files
+        run: |
+          yamllint ./nginx_proxy/docker-compose.yml
+          yamllint ./prod-odoo/docker-compose.yml
+          yamllint ./uat-odoo/docker-compose.yml
+
       - name: Scan Odoo image with Trivy
         uses: aquasecurity/trivy-action@v0.16.1
         with:
@@ -26,44 +32,39 @@ jobs:
           format: table
           ignore-unfixed: true
           severity: CRITICAL,HIGH
-          exit-code: 0  # Change to 1 if you want to block deploy on issues
+          exit-code: 0
 
-      - name: Add SSH Key to Known Hosts
+      - name: Add SSH key to known hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      - name: Set up SSH Agent
+      - name: Set up SSH agent
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Copy Files to Server
+      - name: Copy files to server
         run: |
-          scp -r ./nginx prod-odoo uat-odoo sqlbak ubuntu@${{ secrets.HOST }}:/home/ubuntu
+          scp -r ./nginx_proxy prod-odoo uat-odoo sqlbak scripts ubuntu@${{ secrets.HOST }}:/home/ubuntu
 
-      - name: Deploy to Server
+      - name: Deploy to server
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.HOST }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Install Docker and Compose
-            curl -fsSL https://get.docker.com | sudo sh
-            sudo apt install -y docker-compose-plugin
+            chmod +x ~/scripts/install-docker.sh
+            ~/scripts/install-docker.sh
 
-            # Verify Docker
-            docker --version
-            docker compose version
-
-            # Create Docker resources
             docker network create prod-network || true
             docker network create uat-network || true
             docker volume create prod-vol || true
             docker volume create uat-vol || true
-           
-            # Deploy containers
+            docker volume create sql-backup || true
+            docker volume create sql-local || true
+
             cd ~/nginx_proxy && docker compose up -d
             cd ~/prod-odoo && docker compose up -d
             cd ~/uat-odoo && docker compose up -d
