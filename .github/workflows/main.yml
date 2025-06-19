@@ -55,15 +55,15 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            curl -fsSL https://get.docker.com | sudo sh
+            sudo curl -fsSL https://get.docker.com | sudo sh
             sudo usermod -aG docker ubuntu
             sudo apt install -y docker-compose-plugin
 
-            docker network create prod-network || true
-            docker network create uat-network || true
-            docker volume create prod-vol || true
-            docker volume create uat-vol || true
+            sudo docker network create prod-network || true
+            sudo docker network create uat-network || true
+            sudo docker volume create prod-vol || true
+            sudo docker volume create uat-vol || true
             
-            cd ~/nginx && docker compose up -d
-            cd ~/prod-odoo && docker compose up -d
-            cd ~/uat-odoo && docker compose up -d
+            cd ~/nginx && sudo docker compose up -d
+            cd ~/prod-odoo && sudo docker compose up -d
+            cd ~/uat-odoo && sudo docker compose up -d
