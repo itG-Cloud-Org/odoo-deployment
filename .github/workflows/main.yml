@@ -46,7 +46,7 @@ jobs:
 
       - name: Copy files to server
         run: |
-          scp -r ./nginx_proxy prod-odoo uat-odoo sqlbak scripts ubuntu@${{ secrets.HOST }}:/home/ubuntu
+          scp -r ./nginx prod-odoo uat-odoo sqlbak scripts ubuntu@${{ secrets.HOST }}:/home/ubuntu
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.1.0
