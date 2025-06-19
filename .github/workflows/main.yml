@@ -21,9 +21,9 @@ jobs:
 
       - name: Lint docker-compose YAML files
         run: |
-          yamllint ./nginx/docker-compose.yml
-          yamllint ./prod-odoo/docker-compose.yml
-          yamllint ./uat-odoo/docker-compose.yml
+          yamllint ./nginx/docker-compose.yaml
+          yamllint ./prod-odoo/docker-compose.yaml
+          yamllint ./uat-odoo/docker-compose.yaml
 
       - name: Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.9.2
