@@ -21,7 +21,7 @@ jobs:
 
       - name: Lint docker-compose YAML files
         run: |
-          yamllint ./nginx_proxy/docker-compose.yml
+          yamllint ./nginx/docker-compose.yml
           yamllint ./prod-odoo/docker-compose.yml
           yamllint ./uat-odoo/docker-compose.yml
 
