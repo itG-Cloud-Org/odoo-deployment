@@ -31,4 +31,3 @@ services:
 networks:
   prod-network:
     external: true
-
