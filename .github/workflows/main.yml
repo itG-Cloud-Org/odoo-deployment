@@ -1,0 +1,69 @@
+name: Deploy Odoo
+
+on:
+  workflow_dispatch:
+#  push:
+#    branches:
+#     - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install ssh and sshpass
+        run: |
+          sudo apt update
+          sudo apt install -y ssh sshpass
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Scan Odoo image with Trivy
+        uses: aquasecurity/trivy-action@v0.16.1
+        with:
+          image-ref: odoo:17
+          format: table
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+          exit-code: 0  # Change to 1 if you want to block deploy on issues
+
+      - name: Add SSH Key to Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+      - name: Set up SSH Agent
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Copy Files to Server
+        run: |
+          scp -r ./nginx prod-odoo uat-odoo sqlbak ubuntu@${{ secrets.HOST }}:/home/ubuntu
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Install Docker and Compose
+            curl -fsSL https://get.docker.com | sudo sh
+            sudo apt install -y docker-compose-plugin
+
+            # Verify Docker
+            docker --version
+            docker compose version
+
+            # Create Docker resources
+            docker network create prod-network || true
+            docker network create uat-network || true
+            docker volume create prod-vol || true
+            docker volume create uat-vol || true
+           
+            # Deploy containers
+            cd ~/nginx_proxy && docker compose up -d
+            cd ~/prod-odoo && docker compose up -d
+            cd ~/uat-odoo && docker compose up -d
