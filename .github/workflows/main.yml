@@ -55,14 +55,14 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            chmod +x ~/scripts/install-docker.sh
-            ~/scripts/install-docker.sh
+            curl -fsSL https://get.docker.com | sudo sh
+            sudo apt install -y docker-compose-plugin
 
             docker network create prod-network || true
             docker network create uat-network || true
             docker volume create prod-vol || true
             docker volume create uat-vol || true
             
-            cd ~/nginx_proxy && docker compose up -d
+            cd ~/nginx && docker compose up -d
             cd ~/prod-odoo && docker compose up -d
             cd ~/uat-odoo && docker compose up -d
