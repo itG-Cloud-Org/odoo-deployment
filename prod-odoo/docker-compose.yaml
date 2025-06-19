@@ -28,7 +28,6 @@ services:
       - /var/lib/docker/volumes/prod-vol/_data:/var/lib/postgresql/data
     networks:
       - prod-network
-
 networks:
   prod-network:
     external: true
