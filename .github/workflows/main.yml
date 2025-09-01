@@ -63,7 +63,8 @@ jobs:
              sudo -S docker volume create prod-vol || true
              sudo -S docker volume create uat-vol || true
              sudo touch /home/ubuntu/uat-odoo/config/odoo.conf || true
-             sudo echo "[options]\nxmlrpc_port = 8073" > /home/ubuntu/uat-odoo/config/odoo.conf || true
+             sudo echo "[options]"> /home/ubuntu/uat-odoo/config/odoo.conf || true
+             sudo echo "xmlrpc_port = 8073" >> /home/ubuntu/uat-odoo/config/odoo.conf || true
              cd /home/ubuntu/nginx && sudo docker compose up -d
              cd /home/ubuntu/prod-odoo && sudo docker compose up -d
              cd /home/ubuntu/uat-odoo && sudo mkdir config
