@@ -62,9 +62,9 @@ jobs:
              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker network create uat-network || true
              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker volume create prod-vol || true
              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker volume create uat-vol || true
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo touch ~/uat-odoo/config/odoo.conf || true
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo echo "[options]\nxmlrpc_port = 8073" > ~/uat-odoo/config/odoo.conf || true
              cd ~/nginx && sudo docker compose up -d
              cd ~/prod-odoo && sudo docker compose up -d
              cd ~/uat-odoo && sudo mkdir config
-             sudo touch ~/uat-odoo/config/odoo.conf
-             sudo echo "[options]\nxmlrpc_port = 8073" > ~/uat-odoo/config/odoo.conf 
              cd ~/uat-odoo && sudo docker compose up -d
