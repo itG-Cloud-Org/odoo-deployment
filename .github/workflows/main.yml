@@ -72,16 +72,3 @@ jobs:
              sudo touch ~/uat-odoo/config/odoo.conf
              cd ~/uat-odoo && sudo echo "[options]\nxmlrpc_port = 8073" > odoo.conf 
              cd ~/uat-odoo && sudo docker compose up -d
-
-
-           # sudo curl -fsSL https://get.docker.com | sudo sh
-           # sudo usermod -aG docker ubuntu
-           # sudo apt install -y docker-compose-plugin
-
-           # sudo docker network create prod-network || true
-           # sudo docker network create uat-network || true
-           # sudo docker volume create prod-vol || true
-           # sudo docker volume create uat-vol || true
-           #  cd ~/nginx && sudo docker compose up -d
-           #  cd ~/prod-odoo && sudo docker compose up -d
-           #  cd ~/uat-odoo && sudo docker compose up -d
