@@ -67,10 +67,12 @@ jobs:
              # echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker compose -f ~/uat-odoo/docker-compose.yml up -d 
              cd ~/nginx && sudo docker compose up -d
              cd ~/prod-odoo && sudo docker compose up -d
+             continue-on-error: true
              cd ~/uat-odoo && sudo mkdir config
              cd ~/uat-odoo/config && sudo touch odoo.conf
              cd ~/uat-odoo && sudo echo "[options]\nxmlrpc_port = 8073" > odoo.conf 
              cd ~/uat-odoo && sudo docker compose up -d
+             continue-on-error: true
 
           
            # sudo curl -fsSL https://get.docker.com | sudo sh
