@@ -52,18 +52,18 @@ jobs:
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.HOST }}
-          username: ubuntu
+          username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S curl -fsSL https://get.docker.com | sudo sh
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S usermod -aG docker ubuntu
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S apt install -y docker-compose-plugin
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker network create prod-network || true
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker network create uat-network || true
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker volume create prod-vol || true
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker volume create uat-vol || true
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo touch ~/uat-odoo/config/odoo.conf || true
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo echo "[options]\nxmlrpc_port = 8073" > ~/uat-odoo/config/odoo.conf || true
+             sudo -S curl -fsSL https://get.docker.com | sudo sh
+             sudo -S usermod -aG docker ubuntu
+             sudo -S apt install -y docker-compose-plugin
+             sudo -S docker network create prod-network || true
+             sudo -S docker network create uat-network || true
+             sudo -S docker volume create prod-vol || true
+             sudo -S docker volume create uat-vol || true
+             sudo touch ~/uat-odoo/config/odoo.conf || true
+             sudo echo "[options]\nxmlrpc_port = 8073" > ~/uat-odoo/config/odoo.conf || true
              cd ~/nginx && sudo docker compose up -d
              cd ~/prod-odoo && sudo docker compose up -d
              cd ~/uat-odoo && sudo mkdir config
