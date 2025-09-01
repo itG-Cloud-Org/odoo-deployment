@@ -55,15 +55,23 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo curl -fsSL https://get.docker.com | sudo sh
-            sudo usermod -aG docker ubuntu
-            sudo apt install -y docker-compose-plugin
+          #  sudo curl -fsSL https://get.docker.com | sudo sh
+          #  sudo usermod -aG docker ubuntu
+          #  sudo apt install -y docker-compose-plugin
 
-            sudo docker network create prod-network || true
-            sudo docker network create uat-network || true
-            sudo docker volume create prod-vol || true
-            sudo docker volume create uat-vol || true
-            
-            cd ~/nginx && sudo docker compose up -d
-            cd ~/prod-odoo && sudo docker compose up -d
-            cd ~/uat-odoo && sudo docker compose up -d
+          #  sudo docker network create prod-network || true
+          #  sudo docker network create uat-network || true
+          #  sudo docker volume create prod-vol || true
+          #  sudo docker volume create uat-vol || true
+             
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S curl -fsSL https://get.docker.com | sudo sh
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S usermod -aG docker ubuntu
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S apt install -y docker-compose-plugin
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker network create prod-network || true
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker network create uat-network || true
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker volume create prod-vol || true
+             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker volume create uat-vol || true
+
+             cd ~/nginx && sudo docker compose up -d
+             cd ~/prod-odoo && sudo docker compose up -d
+             cd ~/uat-odoo && sudo docker compose up -d
