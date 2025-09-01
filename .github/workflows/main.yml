@@ -62,12 +62,12 @@ jobs:
              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker network create uat-network || true
              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker volume create prod-vol || true
              echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker volume create uat-vol || true
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker compose -f ~/nginx/docker-compose.yml up -d
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker compose -f ~/prod-odoo/docker-compose.yml up -d
-             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker compose -f ~/uat-odoo/docker-compose.yml up -d 
-             # cd ~/nginx && sudo docker compose up -d
-             # cd ~/prod-odoo && sudo docker compose up -d
-             # cd ~/uat-odoo && sudo docker compose up -d
+             # echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker compose -f ~/nginx/docker-compose.yml up -d
+             # echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker compose -f ~/prod-odoo/docker-compose.yml up -d
+             # echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker compose -f ~/uat-odoo/docker-compose.yml up -d 
+             echo "${{ secrets.SUDO_PASSWORD }}" | cd ~/nginx && sudo docker compose up -d
+             echo "${{ secrets.SUDO_PASSWORD }}" | cd ~/prod-odoo && sudo docker compose up -d
+             echo "${{ secrets.SUDO_PASSWORD }}" | cd ~/uat-odoo && sudo docker compose up -d
 
           
            # sudo curl -fsSL https://get.docker.com | sudo sh
