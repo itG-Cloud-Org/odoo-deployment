@@ -12,7 +12,7 @@ services:
     environment:
       - HOST=db2
       - USER=odoo
-      - PASSWORD=myodoo
+      - PASSWORD=sdodoo
     volumes:
       - ./config:/etc/odoo
     networks:
@@ -23,7 +23,7 @@ services:
     image: postgres:16.3
     environment:
       - POSTGRES_DB=postgres
-      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_PASSWORD=sdodoo
       - POSTGRES_USER=odoo
     volumes:
       - /var/lib/docker/volumes/uat-vol/_data:/var/lib/postgresql/data
