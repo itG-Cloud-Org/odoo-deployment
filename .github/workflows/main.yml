@@ -28,7 +28,7 @@ jobs:
       - name: Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.9.2
         with:
-          image-ref: odoo:17
+          image-ref: odoo:18
           format: table
           ignore-unfixed: true
           severity: CRITICAL,HIGH
