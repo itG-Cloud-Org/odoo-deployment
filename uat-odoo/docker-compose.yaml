@@ -4,7 +4,7 @@ version: '3.1'
 services:
   odoo:
     container_name: odoo2
-    image: odoo:15
+    image: odoo:18
     depends_on:
       - db
     ports:
@@ -20,7 +20,7 @@ services:
 
   db:
     container_name: db2
-    image: postgres:16.3
+    image: postgres
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=sdodoo
